@@ -1,0 +1,4 @@
+<?php
+
+// The webserver's interface whose IP should be used for the Reverse DNS lookup
+$config['webserver_rdns_lookup_interface'] = 'eth0';

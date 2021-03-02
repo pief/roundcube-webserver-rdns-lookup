@@ -1,0 +1,22 @@
+{
+    "name": "pief/webserver_rdns_lookup",
+    "type": "roundcube-plugin",
+    "description": "Plugin that does a reverse DNS lookup on the actual webserver's IP address.",
+    "license": "GPLv3+",
+    "authors": [
+        {
+            "name": "Pieter Hollants",
+            "email": "pieter@hollants.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/pief/roundcube-webserver-rdns-lookup"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "roundcube/plugin-installer": ">=0.1.3"
+    }
+}

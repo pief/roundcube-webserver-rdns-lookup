@@ -1,0 +1,63 @@
+
+                  webserver_rdns_lookup Roundcube plugin
+          Copyright (c) 2021 Pieter Hollants <pieter@hollants.com>
+       Licensed under the GNU Lesser Public License (LGPL) version 3
+
+
+WHAT IS IT?
+
+This is a simple plugin for the Roundcube Webmail web application. It augments
+the configured "product_name" shown to end users with a webserver's hostname
+from a DNS perspective, i.e. through a reverse lookup of an interface's IPv4
+address.
+
+This is useful if you have more than one webserver that might reply to a
+common service name and/or IP address shared among these webservers and you
+want to enable users to identify which one in particular, e.g. to provide more
+useful bug reports.
+
+For example, you could have Roundcube's "product_name configured to be 
+"example.com Webmail" and a HA proxy listening at "mail.example.com"
+redirecting requests to either one of
+
+  VM1    server1.example.com    eth0: 192.168.10.11
+  VM2    server2.example.com    eth0: 192.168.10.12
+
+Then this plugin (when running on server1) would lookup 192.168.10.11 in
+the DNS, find "server1" in the DNS and change "product_name" to read
+"example.com Webmail (server1)".
+
+The reason the plugin does not simply use the locally configured hostname
+is because there is another usage scenario that I use, A/B setups where
+the locally configured hostname is identical.
+
+For example, "mail.example.com" could point to 192.168.10.100 which is a
+service IP address only configured on the active system:
+
+  VM1    mail.example.com      eth0: 192.168.10.11 (in DNS as "server1")
+                               eth0.1: 192.168.10.100 (in DNS as "mail")
+  VM2    mail.example.com      eth0: 192.168.10.12 (in DNS as "server2")
+
+In this scenario the locally configured hostname would always be "mail"
+because both VMs at all times think that THEY are "mail" but external
+knowledge in form of DNS actually decides which is the active one.
+
+
+INSTALLATION
+
+1. If you're not using "composer" to install the plugin: create a directory
+   "plugins/webserver_rdns_lookup" in your Roundcube installation and copy
+   all files there.
+2. Inside that directory, copy "config.inc.php.dist" to "config.inc.php"
+   and edit it. Change the $config['webserver_rdns_lookup_interface']
+   variable to specify the name of the network interface whose primary
+   IPv4 address should be used for the DNS lookup.
+3. Add "webserver_rdns_lookup" to the $config['plugins'] array in
+   Roundcube's own config/config.inc.php.
+
+
+LICENSE
+
+This software is licensed under the GNU General Public License (GPL),
+version 3. See http://www.gnu.org/licenses/gpl-3.0.txt or the included file
+LICENSE.
